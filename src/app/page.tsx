@@ -1,13 +1,23 @@
+
+"use client";
 // King of the Court Landing Page
 
 import Image from "next/image";
 import Button from "@/components/Button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/navigation";
 import Card from "@/components/Card";
 import Banner from "@/components/Banner";
 import LeaderboardCard from "@/components/LeaderboardCard";
 import SectionTitle from "@/components/SectionTitle";
 
 export default function Home() {
+  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+  const router = useRouter();
+  const handleLogin = async () => {
+    await loginWithRedirect({ appState: { returnTo: "/test" } });
+  };
+  const handleLogout = () => logout({ logoutParams: { returnTo: window.location.origin } });
   return (
     <>
       {/* Top Navigation */}
@@ -24,7 +34,11 @@ export default function Home() {
             <a className="hover:text-primary transition-colors text-primary" href="#">Reclutar</a>
           </nav>
           <div className="flex items-center gap-4">
-            <Button>Iniciar Sesión</Button>
+            {!isAuthenticated ? (
+              <Button onClick={handleLogin}>Iniciar Sesión</Button>
+            ) : (
+              <Button onClick={handleLogout}>Cerrar Sesión</Button>
+            )}
             <div className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
               <Image
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk5QGbN5CoRNCWMb3pU2qXwRLiDCPpXKLkp-TJ0f6hcwbBAP8SwTs6NoN2LC1Mh1lDUkGB-Be_nrqPHNukPfrftlCe99XhjGlEnFTFbx_WW0lefVsD6oHEP7ZETWACF_QOACGZ7qAwFdJYrUF0yE8LvrTb-SCPslEqv-OcpRkmxs-thopAtdcNWioh4M6kFiQxX52OYFRtAsjqOlPy7nvtDtbmibUY0H-D9Q-uZ5nzE7rt0njNeZrVUvozEwdeg65iCY48sCrKNB7k"

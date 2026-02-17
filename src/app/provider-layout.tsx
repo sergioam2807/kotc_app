@@ -1,4 +1,4 @@
-
+import ClientRootProvider from "./client-root-provider";
 import { Lexend } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +14,7 @@ export const metadata = {
   description: "Reign in the Streets. Join the most elite urban basketball league and prove your dominance on the asphalt.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function ProviderLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body className={`${lexend.variable} bg-background-dark text-white font-display antialiased`}>
-        {children}
+        <ClientRootProvider>{children}</ClientRootProvider>
       </body>
     </html>
   );
