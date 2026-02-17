@@ -15,9 +15,14 @@ const config = {
       colors: {
         primary: "#f45925",
         "background-light": "#f8f6f5",
-        "background-dark": "#1a0f0c",
-        "surface-dark": "#2a1a16",
+        "background-dark": "#120a08",
+        "surface-dark": "#1e1310",
+        "accent-dark": "#2d1d19",
+        // legacy colors for compatibility
         "border-dark": "#3d2a24",
+        // legacy values
+        "background-dark-legacy": "#1a0f0c",
+        "surface-dark-legacy": "#2a1a16",
       },
       fontFamily: {
         display: ["Lexend", "sans-serif"],
