@@ -1,15 +1,10 @@
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #1a0f0c;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --text-light: #f8f6f5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +16,14 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-light);
+  font-family: 'Lexend', var(--font-lexend), Arial, Helvetica, sans-serif;
+}
+
+/* Custom utilities for landing page */
+.urban-gradient {
+  background: linear-gradient(180deg, rgba(26, 15, 12, 0.4) 0%, rgba(26, 15, 12, 0.95) 100%);
+}
+.glow-primary {
+  box-shadow: 0 0 20px rgba(244, 89, 37, 0.3);
 }

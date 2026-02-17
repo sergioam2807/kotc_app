@@ -1,6 +1,7 @@
-import type { Config } from "tailwindcss";
+/** @type {import('tailwindcss').Config} */
+import forms from '@tailwindcss/forms';
 
-const config: Config = {
+const config = {
   darkMode: "class",
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
@@ -29,7 +30,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [forms],
 };
 
 export default config;
