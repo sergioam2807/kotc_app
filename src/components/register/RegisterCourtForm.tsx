@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 
 export default function RegisterCourtForm() {
@@ -10,12 +11,25 @@ export default function RegisterCourtForm() {
       <div className="grid grid-cols-1 gap-6 bg-white/5 p-6 md:p-8 rounded-xl border border-white/10 backdrop-blur-sm mt-8">
         {/* Nombre de la cancha */}
         <div className="flex flex-col gap-2">
-          <label className="text-primary text-sm font-bold uppercase tracking-wider">Nombre de la cancha</label>
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Nombre de la cancha</label>
           <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all" placeholder="Nombre de la cancha..." type="text" defaultValue="Los Bomberos" />
         </div>
-        {/* Distrito / Comuna */}
+        {/*Region */}
         <div className="flex flex-col gap-2">
-          <label className="text-primary text-sm font-bold uppercase tracking-wider">Distrito / Comuna</label>
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Region</label>
+          <div className="relative">
+            <select className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all">
+              <option value="1">Distrito 1 - El Centro</option>
+              <option selected value="7">Distrito 7 - Las Condes</option>
+              <option value="3">Distrito 3 - Providencia</option>
+              <option value="10">Distrito 10 - Downtown</option>
+            </select>
+            <span className="material-symbols-outlined absolute right-4 top-4 pointer-events-none text-white/40">expand_more</span>
+          </div>
+        </div>
+        {/* Comuna */}
+        <div className="flex flex-col gap-2">
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Comuna</label>
           <div className="relative">
             <select className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all">
               <option value="1">Distrito 1 - El Centro</option>
@@ -28,7 +42,7 @@ export default function RegisterCourtForm() {
         </div>
         {/* Dirección/Ubicación */}
         <div className="flex flex-col gap-2">
-          <label className="text-primary text-sm font-bold uppercase tracking-wider">Dirección/Ubicación</label>
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Dirección/Ubicación</label>
           <div className="flex gap-2">
             <div className="relative flex-1">
               <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all" placeholder="Buscar dirección para autocompletar..." type="text" />
@@ -41,7 +55,7 @@ export default function RegisterCourtForm() {
         </div>
         {/* Foto de la cancha */}
         <div className="flex flex-col gap-2">
-          <label className="text-primary text-sm font-bold uppercase tracking-wider">Foto de la cancha</label>
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Foto de la cancha</label>
           <div className="relative h-48 w-full rounded-xl overflow-hidden border-2 border-dashed border-white/20 group hover:border-primary transition-all">
             <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDHFgI0LvCSemqepneZudHtxkTqsXMMSt3juvsuFGfO6ElFCb9NT_sap_nKrzVG2voqpujLNNo2eHvxVR41t9x3WCNU4c6Z1vGQjMKTsoOWSwP8Sq77bs-5uQ3p-trLr5xCqZKa2iVBdtIq3bsoyDMz7T3CAcxEap3E0YTSEM_RxTu9tWbrrmBLukVrieh6vfOXDb4n1DccqfI9E7ggdOxYelqXikD-FeEmZ3H6jq6AZKmEOSvOQQ5ShH44rYBpWEh6MvLb52KnevhL')" }}></div>
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 flex flex-col items-center justify-center gap-2 transition-all">
@@ -64,7 +78,7 @@ export default function RegisterCourtForm() {
           </div>
           {/* Precio por hora */}
           <div className="flex flex-col gap-2 transition-all">
-            <label className="text-primary text-sm font-bold uppercase tracking-wider">Precio por hora ($)</label>
+            <label className="text-white text-sm font-bold uppercase tracking-wider">Precio por hora ($)</label>
             <div className="relative">
               <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all" placeholder="0.00" type="number" defaultValue="15.00" />
               <span className="material-symbols-outlined absolute left-4 top-4 text-white/40">payments</span>
