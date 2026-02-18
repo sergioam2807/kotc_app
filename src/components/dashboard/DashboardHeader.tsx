@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const Dashboard2Header = () => (
+const DashboardHeader = () => (
   <header className="h-20 border-b border-accent-dark flex items-center justify-between px-8 sticky top-0 bg-background-dark/80 backdrop-blur-md z-10">
     <div className="flex items-center flex-1 max-w-xl">
       <div className="relative w-full group">
@@ -15,6 +15,10 @@ const Dashboard2Header = () => (
         <span className="material-symbols-outlined">notifications</span>
         <span className="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-background-dark"></span>
       </button>
+      <a href="/register-court" className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-bold text-sm tracking-wide transition-all shadow-lg shadow-primary/20 flex items-center gap-2">
+        <span className="material-symbols-outlined text-[18px]">add_location_alt</span>
+        AGREGAR CANCHA
+      </a>
       <button className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-bold text-sm tracking-wide transition-all shadow-lg shadow-primary/20 flex items-center gap-2">
         <span className="material-symbols-outlined text-[18px]">add_circle</span>
         CREAR DESAFÍO
@@ -23,4 +27,4 @@ const Dashboard2Header = () => (
   </header>
 );
 
-export default Dashboard2Header;
+export default DashboardHeader;

@@ -15,7 +15,7 @@ export default function Home() {
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const router = useRouter();
   const handleLogin = async () => {
-    await loginWithRedirect({ appState: { returnTo: "/test" } });
+    await loginWithRedirect({ appState: { returnTo: "/dashboard" } });
   };
   const handleLogout = () => logout({ logoutParams: { returnTo: window.location.origin } });
   return (

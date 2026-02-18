@@ -31,6 +31,10 @@ const Sidebar = () => (
         <span className="material-symbols-outlined">history</span>
         <span>Match History</span>
       </a>
+      <a className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-accent-dark hover:text-white transition-all" href="/register-court">
+        <span className="material-symbols-outlined">add_location_alt</span>
+        <span>Agregar Cancha</span>
+      </a>
     </nav>
     <div className="p-4 border-t border-accent-dark">
       <div className="flex items-center gap-3 p-2 rounded-lg bg-accent-dark/50">

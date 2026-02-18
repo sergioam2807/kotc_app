@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const Dashboard2Footer = () => (
+const DashboardFooter = () => (
   <footer className="mt-auto p-8 border-t border-[#2d1d19] bg-[#1e1310] flex flex-col md:flex-row items-center justify-between gap-4 text-white">
     <p className="text-xs text-slate-500 font-medium">© 2024 KING OF THE COURT. TODOS LOS DERECHOS RESERVADOS.</p>
     <div className="flex items-center gap-6">
@@ -13,4 +13,4 @@ const Dashboard2Footer = () => (
   </footer>
 );
 
-export default Dashboard2Footer;
+export default DashboardFooter;
