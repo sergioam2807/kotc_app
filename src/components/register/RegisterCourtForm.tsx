@@ -1,7 +1,29 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getRegions } from "@/services/courtService";
+
+interface Comuna {
+  id: number;
+  name: string;
+}
+
+interface Region {
+  id: number;
+  name: string;
+  comunas: Comuna[];
+}
 
 export default function RegisterCourtForm() {
+  const [regions, setRegions] = useState<Region[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<number | "">("");
+  const [selectedComuna, setSelectedComuna] = useState("");
+
+  useEffect(() => {
+    getRegions()
+      .then(data => setRegions(data))
+      .catch(() => setRegions([]));
+  }, []);
+
   return (
     <div>
       <div>
@@ -14,15 +36,23 @@ export default function RegisterCourtForm() {
           <label className="text-white text-sm font-bold uppercase tracking-wider">Nombre de la cancha</label>
           <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all" placeholder="Nombre de la cancha..." type="text" defaultValue="Los Bomberos" />
         </div>
-        {/*Region */}
+        {/* Región */}
         <div className="flex flex-col gap-2">
-          <label className="text-white text-sm font-bold uppercase tracking-wider">Region</label>
+          <label className="text-white text-sm font-bold uppercase tracking-wider">Región</label>
           <div className="relative">
-            <select className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all">
-              <option value="1">Distrito 1 - El Centro</option>
-              <option selected value="7">Distrito 7 - Las Condes</option>
-              <option value="3">Distrito 3 - Providencia</option>
-              <option value="10">Distrito 10 - Downtown</option>
+            <select
+              className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all"
+              value={selectedRegion}
+              onChange={e => {
+                const value = e.target.value === "" ? "" : Number(e.target.value);
+                setSelectedRegion(value);
+                setSelectedComuna("");
+              }}
+            >
+              <option value="" className="text-black">Selecciona una región...</option>
+              {regions.map(region => (
+                <option className="text-black" key={region.id} value={region.id}>{region.name}</option>
+              ))}
             </select>
             <span className="material-symbols-outlined absolute right-4 top-4 pointer-events-none text-white/40">expand_more</span>
           </div>
@@ -31,11 +61,17 @@ export default function RegisterCourtForm() {
         <div className="flex flex-col gap-2">
           <label className="text-white text-sm font-bold uppercase tracking-wider">Comuna</label>
           <div className="relative">
-            <select className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all">
-              <option value="1">Distrito 1 - El Centro</option>
-              <option selected value="7">Distrito 7 - Las Condes</option>
-              <option value="3">Distrito 3 - Providencia</option>
-              <option value="10">Distrito 10 - Downtown</option>
+            <select
+              className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all"
+              value={selectedComuna}
+              onChange={e => setSelectedComuna(e.target.value)}
+              disabled={!selectedRegion}
+            >
+              <option value="" className="text-black">Selecciona una comuna...</option>
+              {selectedRegion &&
+                regions.find(r => r.id === selectedRegion)?.comunas.map(comuna => (
+                  <option className="text-black" key={comuna.id} value={comuna.id}>{comuna.name}</option>
+                ))}
             </select>
             <span className="material-symbols-outlined absolute right-4 top-4 pointer-events-none text-white/40">expand_more</span>
           </div>
