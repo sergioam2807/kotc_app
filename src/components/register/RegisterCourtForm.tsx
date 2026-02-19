@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useRef } from "react";
 
 import { Map, MapMarker, MarkerContent } from "@/components/ui/map";
-import { getRegions } from "@/services/courtService";
+import { getRegions, registerField } from "@/services/courtService";
+import Modal from "@/components/ui/Modal";
 
 interface GooglePlace {
   description: string;
@@ -46,8 +47,15 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
   const [address, setAddress] = useState("");
   const [addressResults, setAddressResults] = useState<GooglePlace[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [name, setName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
   const autocompleteService = useRef<any>(null);
   const geocoder = useRef<any>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     getRegions()
@@ -97,8 +105,65 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
     });
   }, [address]);
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name || !latitude || !longitude || !selectedComuna) {
+      alert("Por favor completa todos los campos obligatorios.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await registerField({
+        name,
+        latitude,
+        longitude,
+        photoUrl: photoUrl || "https://www.pexels.com/es-es/foto/hombre-tirando-baloncesto-en-el-aro-de-baloncesto-1152853/",
+        isPaid,
+        price: isPaid ? price : 0,
+        comunaId: Number(selectedComuna),
+      });
+      setShowSuccess(true);
+      setName("");
+      setPhotoUrl("");
+      setIsPaid(false);
+      setPrice(0);
+      setSelectedRegion("");
+      setSelectedComuna("");
+      setAddress("");
+      setAddressResults([]);
+      // Opcional: limpiar lat/lng si quieres
+      // setLatitude(null);
+      // setLongitude(null);
+    } catch (err) {
+      setShowError(true);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
-    <div>
+    <>
+      <Modal
+        open={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        icon={<span className="material-symbols-outlined">check_circle</span>}
+        title="Cancha registrada"
+        subtitle="King of the Court"
+        message="Tu cancha ha sido registrada correctamente. ¡Prepárate para dominar la pista y demostrar quién es el rey!"
+        actionLabel="ENTENDIDO"
+        color="emerald"
+      />
+      <Modal
+        open={showError}
+        onClose={() => setShowError(false)}
+        icon={<span className="material-symbols-outlined">error</span>}
+        title="Algo salió mal"
+        subtitle="King of the Court"
+        message="No pudimos procesar tu solicitud. El servidor no responde o hubo un error. Intenta de nuevo."
+        actionLabel="REINTENTAR"
+        color="red"
+      />
+      <form onSubmit={handleSubmit}>
       <div>
         <h1 className="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] uppercase">Registrar nueva cancha</h1>
         <p className="text-white text-lg mt-2">Reclama tu territorio. Agrega un nuevo campo de batalla al mapa global.</p>
@@ -107,7 +172,14 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
         {/* Nombre de la cancha */}
         <div className="flex flex-col gap-2">
           <label className="text-white text-sm font-bold uppercase tracking-wider">Nombre de la cancha</label>
-          <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all" placeholder="Nombre de la cancha..." type="text" defaultValue="Los Bomberos" />
+          <input
+            className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all"
+            placeholder="Nombre de la cancha..."
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+          />
         </div>
         {/* Región */}
         <div className="flex flex-col gap-2">
@@ -252,25 +324,52 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
               <span className="text-white text-sm italic">¿Es una cancha pública o privada?</span>
             </div>
             <div className="flex p-1 bg-background-dark rounded-xl border border-white/10">
-              <button className="px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all bg-transparent text-white hover:text-white">Gratis</button>
-              <button className="px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all bg-primary text-white shadow-lg shadow-primary/20">Pagada</button>
+              <button
+                type="button"
+                className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all ${!isPaid ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-transparent text-white hover:text-white"}`}
+                onClick={() => setIsPaid(false)}
+              >
+                Gratis
+              </button>
+              <button
+                type="button"
+                className={`px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all ${isPaid ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-transparent text-white hover:text-white"}`}
+                onClick={() => setIsPaid(true)}
+              >
+                Pagada
+              </button>
             </div>
           </div>
           {/* Precio por hora */}
-          <div className="flex flex-col gap-2 transition-all">
-            <label className="text-white text-sm font-bold uppercase tracking-wider">Precio por hora ($)</label>
-            <div className="relative">
-              <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all" placeholder="0.00" type="number" defaultValue="15.00" />
-              <span className="material-symbols-outlined absolute left-4 top-4 text-white">payments</span>
+          {isPaid && (
+            <div className="flex flex-col gap-2 transition-all">
+              <label className="text-white text-sm font-bold uppercase tracking-wider">Precio por hora ($)</label>
+              <div className="relative">
+                <input
+                  className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all"
+                  placeholder="0.00"
+                  type="number"
+                  min={0}
+                  value={price}
+                  onChange={e => setPrice(Number(e.target.value))}
+                  required={isPaid}
+                />
+                <span className="material-symbols-outlined absolute left-4 top-4 text-white">payments</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {/* Botón de registro */}
-        <button className="w-full h-16 bg-primary hover:bg-primary/90 text-white text-xl font-black uppercase tracking-widest rounded-xl transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 active:scale-95">
+        <button
+          className="w-full h-16 bg-primary hover:bg-primary/90 text-white text-xl font-black uppercase tracking-widest rounded-xl transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 active:scale-95 disabled:opacity-60"
+          type="submit"
+          disabled={submitting}
+        >
           <span className="material-symbols-outlined font-bold">add_circle</span>
-          Registrar cancha
+          {submitting ? "Registrando..." : "Registrar cancha"}
         </button>
       </div>
-    </div>
+    </form>
+    </>
   );
 }

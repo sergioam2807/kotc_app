@@ -261,7 +261,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       setIsStyleLoaded(false);
       setMapInstance(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sync controlled viewport to map (animated)
