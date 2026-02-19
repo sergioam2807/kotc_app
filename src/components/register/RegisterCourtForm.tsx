@@ -95,7 +95,7 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
     <div>
       <div>
         <h1 className="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em] uppercase">Registrar nueva cancha</h1>
-        <p className="text-white/50 text-lg mt-2">Reclama tu territorio. Agrega un nuevo campo de batalla al mapa global.</p>
+        <p className="text-white text-lg mt-2">Reclama tu territorio. Agrega un nuevo campo de batalla al mapa global.</p>
       </div>
       <div className="grid grid-cols-1 gap-6 bg-white/5 p-6 md:p-8 rounded-xl border border-white/10 backdrop-blur-sm mt-8">
         {/* Nombre de la cancha */}
@@ -223,10 +223,10 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <span className="text-white text-lg font-bold">Tipo de acceso</span>
-              <span className="text-white/50 text-sm italic">¿Es una cancha pública o privada?</span>
+              <span className="text-white text-sm italic">¿Es una cancha pública o privada?</span>
             </div>
             <div className="flex p-1 bg-background-dark rounded-xl border border-white/10">
-              <button className="px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all bg-transparent text-white/50 hover:text-white">Gratis</button>
+              <button className="px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all bg-transparent text-white hover:text-white">Gratis</button>
               <button className="px-6 py-2 rounded-lg text-sm font-bold uppercase transition-all bg-primary text-white shadow-lg shadow-primary/20">Pagada</button>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
             <label className="text-white text-sm font-bold uppercase tracking-wider">Precio por hora ($)</label>
             <div className="relative">
               <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all" placeholder="0.00" type="number" defaultValue="15.00" />
-              <span className="material-symbols-outlined absolute left-4 top-4 text-white/40">payments</span>
+              <span className="material-symbols-outlined absolute left-4 top-4 text-white">payments</span>
             </div>
           </div>
         </div>
