@@ -18,11 +18,15 @@ declare global {
 interface Comuna {
   id: number;
   name: string;
+  latitude: number;
+  longitude: number;
 }
 
 interface Region {
   id: number;
   name: string;
+  latitude: number;
+  longitude: number;
   comunas: Comuna[];
 }
 interface RegisterCourtFormProps {
@@ -30,9 +34,11 @@ interface RegisterCourtFormProps {
   longitude: number | null;
   setLatitude: (lat: number) => void;
   setLongitude: (lng: number) => void;
+  mapViewport: { center: [number, number]; zoom: number };
+  setMapViewport: (viewport: { center: [number, number]; zoom: number }) => void;
 }
 
-export default function RegisterCourtForm({ latitude, longitude, setLatitude, setLongitude }: RegisterCourtFormProps) {
+export default function RegisterCourtForm({ latitude, longitude, setLatitude, setLongitude, mapViewport, setMapViewport }: RegisterCourtFormProps) {
 
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | "">("");
@@ -114,6 +120,15 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
                 const value = e.target.value === "" ? "" : Number(e.target.value);
                 setSelectedRegion(value);
                 setSelectedComuna("");
+                // Buscar coordenadas de la región seleccionada
+                if (value !== "") {
+                  const region = regions.find(r => r.id === value);
+                  if (region && typeof region.latitude === 'number' && typeof region.longitude === 'number') {
+                    setMapViewport({ center: [region.longitude, region.latitude], zoom: 8 });
+                  }
+                } else {
+                  setMapViewport({ center: [-71.543, -33.045], zoom: 6 });
+                }
               }}
             >
               <option value="" className="text-black">Selecciona una región...</option>
@@ -131,7 +146,17 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
             <select
               className="w-full appearance-none rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 px-4 text-lg font-medium transition-all"
               value={selectedComuna}
-              onChange={e => setSelectedComuna(e.target.value)}
+              onChange={e => {
+                setSelectedComuna(e.target.value);
+                // Buscar coordenadas de la comuna seleccionada
+                if (selectedRegion && e.target.value) {
+                  const region = regions.find(r => r.id === selectedRegion);
+                  const comuna = region?.comunas.find(c => c.id === Number(e.target.value));
+                  if (comuna && typeof comuna.latitude === 'number' && typeof comuna.longitude === 'number') {
+                    setMapViewport({ center: [comuna.longitude, comuna.latitude], zoom: 12 });
+                  }
+                }
+              }}
               disabled={!selectedRegion}
             >
               <option value="" className="text-black">Selecciona una comuna...</option>
@@ -161,9 +186,9 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
                 onFocus={() => addressResults.length > 0 && setShowDropdown(true)}
                 onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
               />
-              <span className="material-symbols-outlined absolute left-4 top-4 text-white/40">location_on</span>
+              <span className="material-symbols-outlined absolute left-4 top-4 text-white">location_on</span>
               {showDropdown && addressResults.length > 0 && (
-                <ul className="absolute z-20 left-0 right-0 mt-1 bg-background-dark/90 border border-white/20 rounded-lg shadow-lg max-h-60 overflow-auto">
+                <ul className="absolute z-20 left-0 right-0 mt-1 bg-background border border-white/20 rounded-lg shadow-lg max-h-60 overflow-auto">
                   {addressResults.map((result, idx) => (
                     <li
                       key={idx}
@@ -178,6 +203,7 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
                               const location = results[0].geometry.location;
                               setLatitude(location.lat());
                               setLongitude(location.lng());
+                              setMapViewport({ center: [location.lng(), location.lat()], zoom: 16 });
                             }
                           });
                         }

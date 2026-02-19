@@ -264,7 +264,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Sync controlled viewport to map
+  // Sync controlled viewport to map (animated)
   useEffect(() => {
     if (!mapInstance || !isControlled || !viewport) return;
     if (mapInstance.isMoving()) return;
@@ -277,6 +277,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       pitch: viewport.pitch ?? current.pitch,
     };
 
+    // Solo animar si hay cambio real
     if (
       next.center[0] === current.center[0] &&
       next.center[1] === current.center[1] &&
@@ -288,8 +289,16 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     }
 
     internalUpdateRef.current = true;
-    mapInstance.jumpTo(next);
-    internalUpdateRef.current = false;
+    mapInstance.flyTo({
+      center: next.center,
+      zoom: next.zoom,
+      bearing: next.bearing,
+      pitch: next.pitch,
+      duration: 800
+    });
+    setTimeout(() => {
+      internalUpdateRef.current = false;
+    }, 900);
   }, [mapInstance, isControlled, viewport]);
 
   // Handle style change
