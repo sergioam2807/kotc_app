@@ -1,7 +1,13 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+
 import { Map, MapMarker, MarkerContent } from "@/components/ui/map";
 import { getRegions } from "@/services/courtService";
+
+interface GooglePlace {
+  description: string;
+  place_id: string;
+}
 
 interface Comuna {
   id: number;
@@ -21,16 +27,63 @@ interface RegisterCourtFormProps {
 }
 
 export default function RegisterCourtForm({ latitude, longitude, setLatitude, setLongitude }: RegisterCourtFormProps) {
+
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | "">("");
   const [selectedComuna, setSelectedComuna] = useState("");
   const [address, setAddress] = useState("");
+  const [addressResults, setAddressResults] = useState<GooglePlace[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const autocompleteService = useRef<any>(null);
+  const geocoder = useRef<any>(null);
 
   useEffect(() => {
     getRegions()
       .then(data => setRegions(data))
       .catch(() => setRegions([]));
   }, []);
+
+
+  // Cargar Google Maps Places API script
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Evitar cargar el script varias veces
+      if (!window.google || !window.google.maps || !window.google.maps.places) {
+        if (!document.getElementById("google-maps-script")) {
+          const script = document.createElement("script");
+          script.id = "google-maps-script";
+          script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCCJS-nHMGWfbF-8r9yl4tdEODgNQOqiC0&libraries=places&language=es`;
+          script.async = true;
+          script.onload = () => {
+            autocompleteService.current = new window.google.maps.places.AutocompleteService();
+            geocoder.current = new window.google.maps.Geocoder();
+          };
+          document.body.appendChild(script);
+        }
+      } else {
+        autocompleteService.current = new window.google.maps.places.AutocompleteService();
+        geocoder.current = new window.google.maps.Geocoder();
+      }
+    }
+  }, []);
+
+  // Buscar sugerencias de direcciones con Google Places
+  useEffect(() => {
+    if (!autocompleteService.current || address.length < 3) {
+      setAddressResults([]);
+      setShowDropdown(false);
+      return;
+    }
+    autocompleteService.current.getPlacePredictions({ input: address, componentRestrictions: { country: "cl" }, language: "es" }, (predictions: any[] | null) => {
+      if (predictions && predictions.length > 0) {
+        setAddressResults(predictions.map(p => ({ description: p.description, place_id: p.place_id })));
+        setShowDropdown(true);
+      } else {
+        setAddressResults([]);
+        setShowDropdown(false);
+      }
+    });
+  }, [address]);
 
   return (
     <div>
@@ -94,9 +147,41 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
                 placeholder="Buscar dirección para autocompletar..."
                 type="text"
                 value={address}
-                onChange={e => setAddress(e.target.value)}
+                onChange={e => {
+                  setAddress(e.target.value);
+                  setShowDropdown(true);
+                }}
+                autoComplete="off"
+                onFocus={() => addressResults.length > 0 && setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
               />
               <span className="material-symbols-outlined absolute left-4 top-4 text-white/40">location_on</span>
+              {showDropdown && addressResults.length > 0 && (
+                <ul className="absolute z-20 left-0 right-0 mt-1 bg-background-dark/90 border border-white/20 rounded-lg shadow-lg max-h-60 overflow-auto">
+                  {addressResults.map((result, idx) => (
+                    <li
+                      key={idx}
+                      className="px-4 py-2 cursor-pointer hover:bg-primary/20 text-white text-sm"
+                      onMouseDown={() => {
+                        setAddress(result.description);
+                        setShowDropdown(false);
+                        // Geocodificar el place_id seleccionado
+                        if (geocoder.current) {
+                          geocoder.current.geocode({ placeId: result.place_id }, (results: any[], status: string) => {
+                            if (status === "OK" && results && results[0]) {
+                              const location = results[0].geometry.location;
+                              setLatitude(location.lat());
+                              setLongitude(location.lng());
+                            }
+                          });
+                        }
+                      }}
+                    >
+                      {result.description}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <button
               className="bg-white/10 hover:bg-white/20 text-white px-4 rounded-lg flex items-center justify-center transition-all border border-white/10"
