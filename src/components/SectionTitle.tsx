@@ -9,7 +9,7 @@ interface SectionTitleProps {
 export default function SectionTitle({ overline, title, className = "" }: SectionTitleProps) {
   return (
     <div className={`mb-16 ${className}`}>
-      <h2 className="text-primary font-bold uppercase tracking-[0.3em] mb-4">{overline}</h2>
+      <h2 className="text-white font-bold uppercase tracking-[0.3em] mb-4">{overline}</h2>
       <h3 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter">{title}</h3>
     </div>
   );
