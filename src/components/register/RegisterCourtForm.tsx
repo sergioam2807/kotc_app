@@ -9,6 +9,12 @@ interface GooglePlace {
   place_id: string;
 }
 
+declare global {
+  interface Window {
+    google?: any;
+  }
+}
+
 interface Comuna {
   id: number;
   name: string;
