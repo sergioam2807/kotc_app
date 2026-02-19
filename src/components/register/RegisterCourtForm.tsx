@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
+import { Map, MapMarker, MarkerContent } from "@/components/ui/map";
 import { getRegions } from "@/services/courtService";
 
 interface Comuna {
@@ -12,11 +13,18 @@ interface Region {
   name: string;
   comunas: Comuna[];
 }
+interface RegisterCourtFormProps {
+  latitude: number | null;
+  longitude: number | null;
+  setLatitude: (lat: number) => void;
+  setLongitude: (lng: number) => void;
+}
 
-export default function RegisterCourtForm() {
+export default function RegisterCourtForm({ latitude, longitude, setLatitude, setLongitude }: RegisterCourtFormProps) {
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | "">("");
   const [selectedComuna, setSelectedComuna] = useState("");
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     getRegions()
@@ -76,18 +84,37 @@ export default function RegisterCourtForm() {
             <span className="material-symbols-outlined absolute right-4 top-4 pointer-events-none text-white/40">expand_more</span>
           </div>
         </div>
-        {/* Dirección/Ubicación */}
+        {/* Dirección/Ubicación y Mapa */}
         <div className="flex flex-col gap-2">
           <label className="text-white text-sm font-bold uppercase tracking-wider">Dirección/Ubicación</label>
-          <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
-              <input className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all" placeholder="Buscar dirección para autocompletar..." type="text" />
+              <input
+                className="w-full rounded-lg bg-background-dark/50 border-white/20 text-white focus:border-primary focus:ring-primary h-14 pl-12 pr-4 text-lg font-medium transition-all"
+                placeholder="Buscar dirección para autocompletar..."
+                type="text"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+              />
               <span className="material-symbols-outlined absolute left-4 top-4 text-white/40">location_on</span>
             </div>
-            <button className="bg-white/10 hover:bg-white/20 text-white px-4 rounded-lg flex items-center justify-center transition-all border border-white/10" title="Detectar ubicación actual">
+            <button
+              className="bg-white/10 hover:bg-white/20 text-white px-4 rounded-lg flex items-center justify-center transition-all border border-white/10"
+              title="Detectar ubicación actual"
+              type="button"
+              onClick={() => {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(pos => {
+                    setLatitude(pos.coords.latitude);
+                    setLongitude(pos.coords.longitude);
+                  });
+                }
+              }}
+            >
               <span className="material-symbols-outlined">my_location</span>
             </button>
           </div>
+          {/* El mapa ahora está a la derecha, no aquí */}
         </div>
         {/* Foto de la cancha */}
         <div className="flex flex-col gap-2">
