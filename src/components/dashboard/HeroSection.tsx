@@ -18,17 +18,17 @@ const HeroSection = () => (
           <p className="text-slate-400 font-medium mb-4">Liga Urbana • División NYC • Puesto #12</p>
           <div className="flex flex-wrap justify-center md:justify-start gap-6">
             <div>
-              <p className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Ranking de potencia</p>
+              <p className="text-xs text-white uppercase font-bold tracking-widest mb-1">Ranking de potencia</p>
               <p className="text-2xl font-black text-white italic">98.5 <span className="text-[#f45925] text-sm material-symbols-outlined align-middle">trending_up</span></p>
             </div>
             <div className="w-px h-10 bg-accent-dark"></div>
             <div>
-              <p className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Registro de temporada</p>
+              <p className="text-xs text-white uppercase font-bold tracking-widest mb-1">Registro de temporada</p>
               <p className="text-2xl font-black text-white italic">24 - 4</p>
             </div>
             <div className="w-px h-10 bg-accent-dark"></div>
             <div>
-              <p className="text-xs text-slate-500 uppercase font-bold tracking-widest mb-1">Racha de victorias</p>
+              <p className="text-xs text-white uppercase font-bold tracking-widest mb-1">Racha de victorias</p>
               <p className="text-2xl font-black text-[#f45925] italic">W7</p>
             </div>
           </div>
@@ -37,7 +37,7 @@ const HeroSection = () => (
     </div>
     <div className="bg-[#1e1310] rounded-xl p-6 border border-[#2d1d19] flex flex-col justify-between text-white">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold text-sm uppercase tracking-widest text-slate-400">Team Analytics</h3>
+        <h3 className="font-bold text-sm uppercase tracking-widest text-white">Team Analytics</h3>
         <span className="material-symbols-outlined text-[#f45925]">analytics</span>
       </div>
       <div className="flex-1 flex items-end justify-between gap-2 px-2 pb-2">
@@ -49,12 +49,12 @@ const HeroSection = () => (
             <div className="flex-1 bg-primary/20 rounded-t border-t border-primary/50" style={{ height: "40%" }}></div>
             <div className="flex-1 bg-primary/20 rounded-t border-t border-primary/50" style={{ height: "75%" }}></div>
           </div>
-          <div className="flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
+          <div className="flex justify-between text-[10px] font-bold text-white uppercase tracking-tighter">
             <span>OFF</span><span>DEF</span><span>REB</span><span>AST</span><span>STL</span>
           </div>
         </div>
       </div>
-      <p className="text-xs text-slate-500 mt-4 text-center">Top 3% of teams in Offensive Efficiency</p>
+      <p className="text-xs text-white mt-4 text-center">Top 3% of teams in Offensive Efficiency</p>
     </div>
   </section>
 );

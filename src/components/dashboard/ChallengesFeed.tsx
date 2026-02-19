@@ -19,7 +19,7 @@ const ChallengesFeed = () => (
           <div className="size-10 rounded bg-slate-800 bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAb__A93xxfXLxZnRUApA1XPZt6bvhirvHbuu0A_6WsGgbHj22vLu-Woa4hs9exnNc4WytyqjF34BAf-yAxSBX9zk6M_W7NqN5O9DvqO5y-kKPFSpqcK3hWfGjnsVy9RVY4W2SN3kLMsGCpD5gnFLDhfaF90455rP7fYQS-9eCBXONV_aD6kgneycXZYiW3-5fYzPxbTkL27xpi75b0bgwinCStrJQNc9DwSiV0-NnjPTXHmjqi7q8jab94BuTfIKY3TbmEM3Wu7nwd')" }}></div>
           <div className="flex-1 min-w-0">
             <h6 className="text-sm font-bold uppercase italic truncate">Dunk City Elite</h6>
-            <p className="text-[10px] text-slate-500">Apuesta: 500 Cred</p>
+            <p className="text-[10px] text-white">Apuesta: 500 Cred</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -30,8 +30,8 @@ const ChallengesFeed = () => (
       {/* Partido aceptado */}
       <div className="bg-[#2d1d19]/40 border border-[#2d1d19] rounded-xl p-4 text-white">
         <div className="flex items-center gap-2 mb-3">
-          <span className="material-symbols-outlined text-slate-400 text-sm">schedule</span>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Próximo partido</p>
+          <span className="material-symbols-outlined text-white text-sm">schedule</span>
+          <p className="text-[10px] font-black text-white uppercase tracking-widest">Próximo partido</p>
         </div>
         <div className="flex flex-col items-center justify-center py-2 text-center">
           <div className="flex items-center gap-4 w-full justify-between mb-4">
@@ -52,13 +52,13 @@ const ChallengesFeed = () => (
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-green-500 text-sm">check_circle</span>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Resultado del último partido</p>
+            <p className="text-[10px] font-black text-white uppercase tracking-widest">Resultado del último partido</p>
           </div>
           <span className="text-xs font-black text-green-500 italic">VICTORIA</span>
         </div>
         <div className="mt-2 flex justify-between items-center">
-          <span className="text-xs font-bold text-slate-300">Vs Queens Finest</span>
-          <span className="text-xs font-black">92 - 88</span>
+          <span className="text-xs font-bold text-white">Vs Queens Finest</span>
+          <span className="text-xs font-black text-white">92 - 88</span>
         </div>
       </div>
     </div>

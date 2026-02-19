@@ -8,7 +8,7 @@ const Sidebar = () => (
       <div className="size-8 bg-primary rounded flex items-center justify-center">
         <span className="material-symbols-outlined text-white">sports_basketball</span>
       </div>
-      <h1 className="text-xl font-extrabold tracking-tight uppercase italic text-primary">K.O.T.C.</h1>
+      <h1 className="text-xl font-extrabold tracking-tight uppercase italic chart-1">K.O.T.C.</h1>
     </div>
     <nav className="flex-1 px-4 py-4 space-y-2">
       <a className="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white font-semibold" href="#">
