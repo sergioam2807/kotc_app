@@ -1,8 +1,10 @@
 'use client'
 import React, { useEffect, useState, useRef } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { Map, MapMarker, MarkerContent } from "@/components/ui/map";
 import { getRegions, registerField } from "@/services/courtService";
+import { useUserStore } from "@/store/userStore";
 import Modal from "@/components/ui/Modal";
 
 interface GooglePlace {
@@ -40,6 +42,8 @@ interface RegisterCourtFormProps {
 }
 
 export default function RegisterCourtForm({ latitude, longitude, setLatitude, setLongitude, mapViewport, setMapViewport }: RegisterCourtFormProps) {
+  const { user } = useAuth0();
+  const userData = useUserStore(state => state.userData);
 
   const [regions, setRegions] = useState<Region[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<number | "">("");
@@ -111,6 +115,11 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
       alert("Por favor completa todos los campos obligatorios.");
       return;
     }
+    if (!userData?.id) {
+      alert("No se encontró el usuario. Por favor vuelve a iniciar sesión.");
+      setSubmitting(false);
+      return;
+    }
     setSubmitting(true);
     try {
       await registerField({
@@ -121,6 +130,7 @@ export default function RegisterCourtForm({ latitude, longitude, setLatitude, se
         isPaid,
         price: isPaid ? price : 0,
         comunaId: Number(selectedComuna),
+        userId: userData.id,
       });
       setShowSuccess(true);
       setName("");

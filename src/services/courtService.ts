@@ -14,6 +14,7 @@ export interface FieldData {
   isPaid: boolean;
   price: number;
   comunaId: number;
+  userId?: number;
 }
 
 export async function registerField(fieldData: FieldData) {
